@@ -1,8 +1,7 @@
 ---
 - name: Get IP and Hostname
   hosts: all
-  gather_facts: yes
-  
+  gather_facts: yes  
   tasks:
     - name: Display IP and Hostname
       debug:
