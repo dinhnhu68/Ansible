@@ -2,7 +2,7 @@
 - name: My Playbook
   hosts: all
   vars:
-    var: "br"
+    bien: "br"
   become: "{{ ansible_become | default('yes') }}"
   become_method: "{{ ansible_become_method | default('enable') }}"
   vars:
@@ -15,7 +15,7 @@
     - name: Your task name
       ios_command:
         commands:
-          - show ip int {{ var }}
+          - show ip int {{ bien }}
       register: result
 
     - name: Display the command output
