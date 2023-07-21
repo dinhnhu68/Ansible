@@ -1,0 +1,21 @@
+---
+- name: My Playbook
+  hosts: your_target_hosts
+  become: "{{ ansible_become | default('yes') }}"
+  become_method: "{{ ansible_become_method | default('enable') }}"
+  vars:
+    ansible_become_password: "{{ ansible_become_password }}"
+  vars_prompt:
+    - name: "ansible_become_password"
+      prompt: "Enter the sudo password: "
+      private: yes
+  tasks:
+    - name: Your task name
+      ios_command:
+        commands:
+          - show ip int br
+      register: result
+
+    - name: Display the command output
+      debug:
+        var: result
