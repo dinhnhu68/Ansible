@@ -1,6 +1,6 @@
 ---
 - name: My Playbook
-  hosts: your_target_hosts
+  hosts: all
   vars:
     var: "br"
   become: "{{ ansible_become | default('yes') }}"
