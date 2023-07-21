@@ -1,0 +1,5 @@
+- hosts: all
+  tasks:
+    - name: Show IP information on router
+      raw: show ip int br 
+      become: yes
