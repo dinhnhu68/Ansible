@@ -2,7 +2,7 @@
 - name: My Playbook
   hosts: all
   vars:
-    bien: br
+    bien: test
   become: "{{ ansible_become | default('yes') }}"
   become_method: "{{ ansible_become_method | default('enable') }}"
   vars:
