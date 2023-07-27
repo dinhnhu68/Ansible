@@ -1,6 +1,6 @@
 ---
 - name: Block IP on Cisco IOS devices
-  hosts: Core
+  hosts: Core4
   gather_facts: no  # Tắt thu thập thông tin về các thiết bị trước khi chạy playbook
 
   vars:
