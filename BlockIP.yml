@@ -7,7 +7,7 @@
   connection: network_cli
   tasks:
     - name: Create ACL to block IP
-      cisco.ios.ios_acls:
+      cisco.ios:
         name: MyACL
         rules:
           - action: deny
