@@ -2,7 +2,7 @@
 - name: Block IP on Cisco IOS device
   hosts: Core
   vars:
-    bien: test
+    bien: "test"
   gather_facts: no
   connection: network_cli
   tasks:
@@ -12,5 +12,5 @@
         rules:
           - action: deny
             proto: ip
-            src: {{ bien }}
+            src: "{{ bien }}"
             state: present
