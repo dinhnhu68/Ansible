@@ -1,8 +1,8 @@
 ---
 - name: Block IP Source using User Input
-  hosts: checkpoint
+  hosts: Core
   gather_facts: no
-  connection: httpapi
+  connection: network_cli
 
   vars_prompt:
     - name: source_ip
