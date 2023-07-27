@@ -1,16 +1,20 @@
 ---
-- name: Block IP on Cisco IOS device
-  hosts: Core
-  vars:
-    bien: "192.168.40.100"
+- name: Block IP Source using User Input
+  hosts: checkpoint
   gather_facts: no
-  connection: network_cli
+  connection: httpapi
+
+  vars_prompt:
+    - name: source_ip
+      private: no
+
   tasks:
-    - name: Create ACL to block IP
-      ios_acl:
-        name: MyACL
-        rules:
-          - action: deny
-            proto: ip
-            src: "{{ bien }}"
-            state: present
+    - name: Add Access Rule to Block IP
+      check_point_mgmt:
+        command: add-access-rule
+        position: bottom
+        layer: "Network"
+        name: "Block IP Rule"
+        action: Drop
+        source: "{{ source_ip }}"
+        destination: "any"
