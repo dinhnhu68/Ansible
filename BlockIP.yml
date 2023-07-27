@@ -10,7 +10,7 @@
 
   tasks:
     - name: Create ACL to block IP
-      ios_acl:
+      cisco.ios.ios_acls:
         name: MyACL
         rules:
           - action: deny
