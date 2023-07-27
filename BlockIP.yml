@@ -28,7 +28,7 @@
     - name: Apply ACL to an interface 
       ios_config:
         lines:
-          - "interface GigabitEthernet1/3"
+          - "interface GigabitEthernet0/0"
           - "ip access-group Block_IP_ACL in"
       when: acl_result is changed and ansible_network_os == "ios"
 
