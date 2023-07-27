@@ -1,0 +1,14 @@
+---
+- name: Block IP on Cisco IOS device
+  hosts: Core
+  gather_facts: no
+  connection: network_cli
+  tasks:
+    - name: Create ACL to block IP
+      ios_acl:
+        name: MyACL
+        rules:
+          - action: deny
+            proto: ip
+            src: 192.168.40.100
+            state: present
