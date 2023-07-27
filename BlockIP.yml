@@ -21,7 +21,6 @@
         lines:
           - "ip access-list standard Block_IP_ACL"
           - "deny host {{ blocked_ip_address }}"
-          - "permit any"
       register: acl_result
       when: acl_check.stdout_lines is not search("Block_IP_ACL") and ansible_network_os == "ios"
 
