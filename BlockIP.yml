@@ -20,13 +20,13 @@
           - "permit any"
       register: acl_result
 
-    - name: Apply ACL to an interface (example: GigabitEthernet1)
+    - name: Apply ACL to an interface
       ios_config:
         provider:
           username: "{{ ansible_user }}"
           password: "{{ ansible_password }}"
         lines:
-          - "interface GigabitEthernet1"
+          - "interface GigabitEthernet1/3"
           - "ip access-group Block_IP_ACL in"
       when: acl_result is changed  # Chỉ thực hiện nếu đã thêm hoặc thay đổi ACL
 
