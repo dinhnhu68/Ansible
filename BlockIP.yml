@@ -1,39 +1,39 @@
 ---
 - name: Block IP on Cisco IOS devices
   hosts: Core4
-  gather_facts: no  # Tắt thu thập thông tin về các thiết bị trước khi chạy playbook
+  gather_facts: no
 
   vars:
-    blocked_ip_address: "192.168.40.100"  # Địa chỉ IP mà bạn muốn chặn
-    ansible_user: "your_username"       # Tên người dùng SSH truy cập thiết bị
-    ansible_password: "your_password"       # Mật khẩu SSH truy cập thiết bị
+    blocked_ip_address: "192.168.40.100"
+    ansible_user: "your_username"
+    ansible_password: "your_password"
 
   tasks:
-    - name: Create ACL to block IP
+    - name: Show current ACL
       ios_command:
-        provider:
-          username: "{{ ansible_user }}"
-          password: "{{ ansible_password }}"
         commands:
+          - "show ip access-lists Block_IP_ACL"
+      register: acl_check
+      when: ansible_network_os == "ios"
+
+    - name: Create ACL to block IP
+      ios_config:
+        lines:
           - "ip access-list standard Block_IP_ACL"
           - "deny host {{ blocked_ip_address }}"
           - "permit any"
       register: acl_result
+      when: acl_check.stdout_lines is not search("Block_IP_ACL") and ansible_network_os == "ios"
 
-    - name: Apply ACL to an interface
+    - name: Apply ACL to an interface 
       ios_config:
-        provider:
-          username: "{{ ansible_user }}"
-          password: "{{ ansible_password }}"
         lines:
           - "interface GigabitEthernet1/3"
           - "ip access-group Block_IP_ACL in"
-      when: acl_result is changed  # Chỉ thực hiện nếu đã thêm hoặc thay đổi ACL
+      when: acl_result is changed and ansible_network_os == "ios"
 
     - name: Save the running configuration
       ios_command:
-        provider:
-          username: "{{ ansible_user }}"
-          password: "{{ ansible_password }}"
         commands:
           - "write memory"
+      when: acl_result is changed and ansible_network_os == "ios"
