@@ -1,0 +1,10 @@
+---
+- name: Loop playbook example
+  hosts: DC
+  gather_facts: false
+
+  tasks:
+    - name: Display item from the list
+      debug:
+        msg: "Item: {{ item }}"
+      loop: "{{ my_items }}"
