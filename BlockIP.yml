@@ -1,6 +1,6 @@
 ---
 - name: Block IP on Cisco IOS Core
-  hosts: Core
+  hosts: Core3
   gather_facts: no
 
   vars:
@@ -8,12 +8,6 @@
     ansible_password: "your_password"
 
   tasks:
-    - name: Show current ACL
-      ios_command:
-        commands:
-          - "show ip access-lists Block_IP_ACL"
-      register: acl_check
-      when: ansible_network_os == "ios"
     - name: Delete ACL
       ios_config: 
          Lines: 
@@ -46,7 +40,7 @@
       when: acl_result is changed and ansible_network_os == "ios"
       
 - name: Block IP on Cisco IOS Router     
-  hosts: Router
+  hosts: Router3
   gather_facts: no
 
   vars:
