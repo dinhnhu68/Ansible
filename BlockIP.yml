@@ -1,6 +1,6 @@
 ---
 - name: Block IP on Cisco IOS Core
-  hosts: Router
+  hosts: Core
   gather_facts: no
 
   vars:
