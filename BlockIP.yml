@@ -13,12 +13,12 @@
 
   tasks:
     - name: Delete ACL
-      ios_config::
+      ios_config:
         lines:
           - "no access-list Block_IP_ACL"      
 
     - name: Create ACL to block IPs
-      ios_config::
+      ios_config:
         lines:
           - "access-list standard Block_IP_ACL deny host {{ item }}"
       loop: "{{ my_items }}"
@@ -31,7 +31,7 @@
       
 
     - name: Apply ACL to an interface
-      cisco.ios.ios_config::
+      ios_config:
         lines:
           - "interface range e1/0-3,e2/0-3,e3/0-3"
           - "ip access-group Block_IP_ACL in"      
@@ -40,4 +40,3 @@
       ios_command:
         commands:
           - "write memory"
-      
