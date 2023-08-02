@@ -60,7 +60,7 @@
           
     - name: Create ACL to block IPs
       ios_config:
-        lines:
+         Lines:
           - "access-list standard Block_IP_ACL deny host {{ item }}"
       loop: "{{ my_items }}"
       register: acl_result
@@ -68,14 +68,14 @@
      
     - name: Permit any 
       ios_config:
-        lines:
+         Lines:
           - "access-list standard Block_IP_ACL permit any any"
           
     - name: Apply ACL to an interface 
       ios_config:
-      lines:
-        - "interface Ethernet0/1"
-        - "ip access-group Block_IP_ACL in"
+         Lines:
+          - "interface Ethernet0/1"
+          - "ip access-group Block_IP_ACL in"
       when: acl_result is changed and ansible_network_os == "ios" 
     - name: Save the running configuration
       ios_command:
