@@ -17,8 +17,6 @@
       
     - name: Create ACL to block IPs
       ios_config:
-        debug:
-          msg: "item: {{ item }}"
         lines:
           - "ip access-list standard Block_IP_ACL"
           - "deny host {{ item }}"
