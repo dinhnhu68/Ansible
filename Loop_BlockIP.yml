@@ -1,13 +1,9 @@
 ---
-- name: Block IPs on Cisco IOS devices
+- name: Block IP on Cisco IOS devices
   hosts: all
   gather_facts: no
 
   vars:
-    blocked_ip_addresses:
-      - "192.168.40.100"
-      - "192.168.40.101"  # Thêm các địa chỉ IP cần chặn vào đây
-      - "192.168.40.102"
     ansible_user: "your_username"
     ansible_password: "your_password"
 
@@ -18,23 +14,23 @@
           - "show ip access-lists Block_IP_ACL"
       register: acl_check
       when: ansible_network_os == "ios"
-
+      
     - name: Create ACL to block IPs
       ios_config:
         lines:
           - "ip access-list standard Block_IP_ACL"
           - "deny host {{ item }}"
-        loop: "{{ blocked_ip_addresses }}"
+      loop: "{{ my_items }}"
       register: acl_result
       when: acl_check.stdout_lines is not search("Block_IP_ACL") and ansible_network_os == "ios"
-
+      
     - name: Apply ACL to an interface 
       ios_config:
         lines:
           - "interface Ethernet0/0"
           - "ip access-group Block_IP_ACL in"
       when: acl_result is changed and ansible_network_os == "ios"
-
+      
     - name: Save the running configuration
       ios_command:
         commands:
