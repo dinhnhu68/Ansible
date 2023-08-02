@@ -1,6 +1,6 @@
 ---
-- name: Block IP on Cisco IOS devices
-  hosts: all
+- name: Block IP on Cisco IOS Core
+  hosts: Core 
   gather_facts: no
 
   vars:
@@ -37,3 +37,39 @@
           - "write memory"
       when: acl_result is changed and ansible_network_os == "ios"
       
+- name: Block IP on Cisco IOS Router     
+  hosts: Router
+  gather_facts: no
+
+  vars:
+    ansible_user: "your_username"
+    ansible_password: "your_password"
+  tasks:
+    - name: Delete ACL
+      ios_config: 
+         Lines: 
+          - "no access-list Block_IP_ACL"
+          
+    - name: Create ACL to block IPs
+      ios_config:
+        lines:
+          - "ip access-list standard Block_IP_ACL"
+          - "deny host {{ item }}"
+      loop: "{{ my_items }}"
+      register: acl_result
+      when: acl_check.stdout_lines is not search("Block_IP_ACL") and ansible_network_os == "ios"
+
+    - name: Apply ACL to an interface 
+      ios_config:
+      lines:
+        - "interface Ethernet0/1"
+        - "ip access-group Block_IP_ACL in"
+      when: acl_result is changed and ansible_network_os == "ios" 
+    - name: Save the running configuration
+      ios_command:
+        commands:
+          - "write memory"
+      when: acl_result is changed and ansible_network_os == "ios"
+    
+  
+  
