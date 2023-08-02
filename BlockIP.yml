@@ -23,7 +23,11 @@
       loop: "{{ my_items }}"
       register: acl_result
       when: acl_check.stdout_lines is not search("Block_IP_ACL") and ansible_network_os == "ios"
-      
+    - name: Create ACL to block IPs
+      ios_config:
+        lines:
+          - "permit any any"  
+          
     - name: Apply ACL to an interface 
       ios_config:
         lines:
@@ -58,7 +62,12 @@
       loop: "{{ my_items }}"
       register: acl_result
       when: acl_check.stdout_lines is not search("Block_IP_ACL") and ansible_network_os == "ios"
-
+      
+    - name: Create ACL to block IPs
+      ios_config:
+        lines:
+          - "permit any any"
+          
     - name: Apply ACL to an interface 
       ios_config:
       lines:
