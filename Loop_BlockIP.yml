@@ -6,13 +6,17 @@
   vars:
     ansible_user: "your_username"
     ansible_password: "your_password"
+    my_items:
+      - "192.168.40.100"
+      - "192.168.1.2"
+      # Add more IPs to block if needed
 
   tasks:
-    - name: Create ACL to block IPs
+    - name: Delete ACL
       ios_config:
         lines:
-          - "no access-list Block_IP_ACL"
-          
+          - "no access-list Block_IP_ACL" 
+      
     - name: Create ACL to block IPs
       ios_config:
         lines:
@@ -20,7 +24,7 @@
           - "deny host {{ item }}"
       loop: "{{ my_items }}"
       register: acl_result
-      when: acl_check.stdout_lines is not search("Block_IP_ACL") and ansible_network_os == "ios"
+      when: acl_result is not defined or acl_result is changed and ansible_network_os == "ios"
       
     - name: Apply ACL to an interface 
       ios_config:
