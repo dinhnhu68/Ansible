@@ -8,7 +8,10 @@
     ansible_password: "your_password"
 
   tasks:
-    
+    - name: Create ACL to block IPs
+      ios_config:
+        lines:
+          - "no access-list Block_IP_ACL"
           
     - name: Create ACL to block IPs
       ios_config:
