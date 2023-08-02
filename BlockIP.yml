@@ -13,13 +13,13 @@
 
   tasks:
     - name: Delete ACL
-      ios_config:
+      cisco.ios.ios_config::
         lines:
           - "no access-list Block_IP_ACL"
       
 
     - name: Create ACL to block IPs
-      ios_config:
+      cisco.ios.ios_config::
         lines:
           - "access-list standard Block_IP_ACL deny host {{ item }}"
       loop: "{{ my_items }}"
@@ -32,7 +32,7 @@
       
 
     - name: Apply ACL to an interface
-      ios_config:
+      cisco.ios.ios_config::
         lines:
           - "interface range e1/0-3,e2/0-3,e3/0-3"
           - "ip access-group Block_IP_ACL in"      
@@ -42,48 +42,3 @@
         commands:
           - "write memory"
       
-
-- name: Block IP on Cisco IOS Router
-  hosts: Router
-  gather_facts: no
-
-  vars:
-    ansible_user: "your_username"
-    ansible_password: "your_password"
-    my_items:
-      - "192.168.2.1"
-      - "192.168.2.2"
-      # Add more IPs to block if needed
-
-  tasks:
-    - name: Delete ACL
-      ios_config:
-        lines:
-          - "no access-list Block_IP_ACL"
-      when: acl_check.stdout_lines is search("Block_IP_ACL") and ansible_network_os == "ios"
-
-    - name: Create ACL to block IPs
-      ios_config:
-        lines:
-          - "access-list standard Block_IP_ACL deny host {{ item }}"
-      loop: "{{ my_items }}"
-      register: acl_result
-      when: acl_check.stdout_lines is not search("Block_IP_ACL") and ansible_network_os == "ios"
-
-    - name: Permit any
-      ios_config:
-        lines:
-          - "access-list standard Block_IP_ACL permit any any"
-
-    - name: Apply ACL to an interface
-      ios_config:
-        lines:
-          - "interface Ethernet0/1"
-          - "ip access-group Block_IP_ACL in"
-      when: acl_result is changed and ansible_network_os == "ios"
-
-    - name: Save the running configuration
-      ios_command:
-        commands:
-          - "write memory"
-      when: acl_result is changed and ansible_network_os == "ios"
