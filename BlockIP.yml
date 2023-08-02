@@ -15,8 +15,7 @@
     - name: Delete ACL
       cisco.ios.ios_config::
         lines:
-          - "no access-list Block_IP_ACL"
-      
+          - "no access-list Block_IP_ACL"      
 
     - name: Create ACL to block IPs
       cisco.ios.ios_config::
