@@ -1,6 +1,6 @@
 ---
 - name: Block IP on Cisco IOS Core
-  hosts: Core 
+  hosts: Core
   gather_facts: no
 
   vars:
@@ -14,19 +14,23 @@
           - "show ip access-lists Block_IP_ACL"
       register: acl_check
       when: ansible_network_os == "ios"
-      
+    - name: Delete ACL
+      ios_config: 
+         Lines: 
+          - "no access-list Block_IP_ACL"
+    
     - name: Create ACL to block IPs
       ios_config:
         lines:
-          - "ip access-list standard Block_IP_ACL"
-          - "deny host {{ item }}"
+          - "access-list standard Block_IP_ACL deny host {{ item }}"
       loop: "{{ my_items }}"
       register: acl_result
       when: acl_check.stdout_lines is not search("Block_IP_ACL") and ansible_network_os == "ios"
-    - name: Create ACL to block IPs
+      
+    - name: Permit any 
       ios_config:
         lines:
-          - "permit any any"  
+          - "access-list standard Block_IP_ACL permit any any"  
           
     - name: Apply ACL to an interface 
       ios_config:
@@ -57,16 +61,15 @@
     - name: Create ACL to block IPs
       ios_config:
         lines:
-          - "ip access-list standard Block_IP_ACL"
-          - "deny host {{ item }}"
+          - "access-list standard Block_IP_ACL deny host {{ item }}"
       loop: "{{ my_items }}"
       register: acl_result
       when: acl_check.stdout_lines is not search("Block_IP_ACL") and ansible_network_os == "ios"
-      
-    - name: Create ACL to block IPs
+     
+    - name: Permit any 
       ios_config:
         lines:
-          - "permit any any"
+          - "access-list standard Block_IP_ACL permit any any"
           
     - name: Apply ACL to an interface 
       ios_config:
