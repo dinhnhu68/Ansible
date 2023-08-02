@@ -4,7 +4,10 @@
   gather_facts: no
 
   vars:
-    blocked_ip_address: "192.168.40.100"
+    blocked_ip_addresses:
+      - "192.168.40.100"
+      - "192.168.40.101"
+      - "192.168.40.102"
     ansible_user: "your_username"
     ansible_password: "your_password"
 
@@ -20,7 +23,8 @@
       ios_config:
         lines:
           - "ip access-list standard Block_IP_ACL"
-          - "deny host {{ blocked_ip_address }}"        
+          - "deny host {{ item }}" 
+        loop: "{{ blocked_ip_addresses }}"
       register: acl_result
       when: acl_check.stdout_lines is not search("Block_IP_ACL") and ansible_network_os == "ios"
 
