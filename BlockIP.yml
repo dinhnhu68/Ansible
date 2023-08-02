@@ -18,7 +18,6 @@
           - "show ip access-lists Block_IP_ACL"
       register: acl_check
       when: ansible_network_os == "ios"
-
     - name: Create ACL to block IP
       ios_config:
         lines:
@@ -27,14 +26,12 @@
         loop: "{{ blocked_ip_addresses }}"
       register: acl_result
       when: acl_check.stdout_lines is not search("Block_IP_ACL") and ansible_network_os == "ios"
-
     - name: Apply ACL to an interface 
       ios_config:
         lines:
           - "interface Ethernet0/0"
           - "ip access-group Block_IP_ACL in"
       when: acl_result is changed and ansible_network_os == "ios"
-
     - name: Save the running configuration
       ios_command:
         commands:
