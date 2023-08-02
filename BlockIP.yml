@@ -35,8 +35,7 @@
       ios_config:
         lines:
           - "interface range e1/0-3,e2/0-3,e3/0-3"
-          - "ip access-group Block_IP_ACL in"
-      
+          - "ip access-group Block_IP_ACL in"      
 
     - name: Save the running configuration
       ios_command:
