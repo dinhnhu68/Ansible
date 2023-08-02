@@ -3,6 +3,9 @@
   hosts: all
   gather_facts: yes  
   tasks:
-    - name: Display IP and Hostname
-      debug:
-        msg: "IP: {{ ansible_host }}, Hostname: {{ ansible_hostname }}"
+    - name: Create ACL to block IPs
+      ios_config:
+        lines:
+          - "access-list standard Block_IP_ACL"
+          - "deny host 192.168.40.100"
+
