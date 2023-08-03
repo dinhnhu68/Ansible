@@ -15,7 +15,7 @@
     - name: Delete ACL
       ios_config:
         lines:
-          - "no access-list Block_IP_ACL"      
+          - "no ip access-list standard Block_IP_ACL"      
 
     - name: Create ACL to block IPs
       ios_config:
