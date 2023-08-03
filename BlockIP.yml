@@ -25,7 +25,7 @@
     - name: Permit any
       ios_config:
         lines:
-          - "access-list 10 permit any"
+          - "access-list 10 permit any any"
     
     - name: Apply ACL to an interface
       ios_config:
@@ -64,7 +64,7 @@
     - name: Permit any
       ios_config:
         lines:
-          - "access-list 10 permit any"
+          - "access-list 10 permit any any"
     
     - name: Apply ACL to an interface
       ios_config:
