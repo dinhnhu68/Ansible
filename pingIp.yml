@@ -3,8 +3,10 @@
   hosts: all
   gather_facts: yes  
   tasks:
-    - name: Create ACL to block IPs
+    - name: Delete ACL
       ios_config:
         lines:
-          - "access-list 10 deny host 192.168.40.100"
+          - "no access-list 10"
+          
+    
 
