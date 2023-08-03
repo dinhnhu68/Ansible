@@ -6,38 +6,34 @@
   vars:
     ansible_user: "your_username"
     ansible_password: "your_password"  
-    my_items:
-      - "192.168.40.100"
-      - "192.168.1.2"
-      # Add more IPs to block if needed
-
+  
   tasks:
   
     - name: Delete ACL
       ios_config:
         lines:
-          - "no access-list 10"
+          - "no access-list 150"
     - name: permit ansible 
       ios_config:
         lines:
-          - "access-list 10 permit host 172.16.20.12"
+          - "access-list 150 permit ip host 172.16.20.12 any"
           
     - name: Create ACL to block IPs
       ios_config:
         lines:
-          - "access-list 10 deny host {{ item }}"
+          - "access-list 150 deny ip host any {{ item }}"
       loop: "{{ my_items }}"
 
     - name: Permit any
       ios_config:
         lines:
-          - "access-list 10 permit any"
+          - "access-list 150 permit any"
     
     - name: Apply ACL to an interface
       ios_config:
         lines:
           - "interface range e1/0-3,e2/0-3,e3/0-3"
-          - "ip access-group 10 in"
+          - "ip access-group 150 in"
           
     - name: Save the running configuration
       ios_command:
@@ -51,38 +47,34 @@
   vars:
     ansible_user: "your_username"
     ansible_password: "your_password"
-    my_items:
-      - "192.168.40.100"
-      - "192.168.1.2"
-      # Add more IPs to block if needed
-
+    
   tasks:
     - name: Delete ACL
       ios_config:
         lines:
-          - "no access-list 10"
+          - "no access-list 150"
           
     - name: permit ansible 
       ios_config:
         lines:
-          - "access-list 10 permit host 172.16.20.12"
+          - "access-list 150 permit ip host 172.16.20.12 any"
           
     - name: Create ACL to block IPs
       ios_config:
         lines:
-          - "access-list 10 deny host {{ item }}"
+          - "access-list 150 deny ip host any {{ item }}"
       loop: "{{ my_items }}"
 
     - name: Permit any
       ios_config:
         lines:
-          - "access-list 10 permit any"
+          - "access-list 150 permit any"
     
     - name: Apply ACL to an interface
       ios_config:
         lines:
           - "interface range e1/0-3"
-          - "ip access-group 10 in"
+          - "ip access-group 150 in"
           
     - name: Save the running configuration
       ios_command:
