@@ -10,11 +10,6 @@
       - "192.168.40.100"
       - "192.168.1.2"
       # Add more IPs to block if needed
-
-  ---
-- name: Get IP and Hostname
-  hosts: all
-  gather_facts: yes  
   tasks:
     - name: Delete ACL
       ios_config:
