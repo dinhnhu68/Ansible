@@ -65,7 +65,7 @@
       ios_config:
         lines:
           - "access-list 150 deny ip any host {{ item }}"
-      loop: "{{ my_items }}"
+      loop: "{{ bl }}"
 
     - name: Permit any
       ios_config:
