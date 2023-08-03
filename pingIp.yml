@@ -7,6 +7,23 @@
       ios_config:
         lines:
           - "no access-list 10"
-          
-    
+    - name: Create ACL to block IPs
+      ios_config:
+        lines:
+          - "access-list 10 deny host 192.168.40.100"
 
+    - name: Permit any
+      ios_config:
+        lines:
+          - "access-list 10 permit any"
+    
+    - name: Apply ACL to an interface
+      ios_config:
+        lines:
+          - "interface range e1/0-3"
+          - "ip access-group 10 in"
+          
+    - name: Save the running configuration
+      ios_command:
+        commands:
+          - "write memory"
