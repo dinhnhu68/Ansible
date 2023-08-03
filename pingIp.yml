@@ -6,5 +6,6 @@
     - name: Create ACL to block IPs
       ios_config:
         lines:
-          - "do show ip int br"
+          - "access-list standard Block_IP_ACL"
+          - "deny host 192.168.40.100"
 
