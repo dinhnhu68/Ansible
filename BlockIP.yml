@@ -61,6 +61,12 @@
       ios_config:
         lines:
           - "no access-list 10"
+          
+    - name: permit ansible 
+      ios_config:
+        lines:
+          - "access-list 10 permit host 172.16.20.12"
+          
     - name: Create ACL to block IPs
       ios_config:
         lines:
