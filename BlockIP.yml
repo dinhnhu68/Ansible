@@ -21,13 +21,13 @@
     - name: Create ACL to block IPs
       ios_config:
         lines:
-          - "access-list 150 deny ip host any {{ item }}"
+          - "access-list 150 deny ip any host {{ item }}"
       loop: "{{ my_items }}"
 
     - name: Permit any
       ios_config:
         lines:
-          - "access-list 150 permit any"
+          - "access-list 150 permit ip any any"
     
     - name: Apply ACL to an interface
       ios_config:
@@ -62,13 +62,13 @@
     - name: Create ACL to block IPs
       ios_config:
         lines:
-          - "access-list 150 deny ip host any {{ item }}"
+          - "access-list 150 deny ip any host {{ item }}"
       loop: "{{ my_items }}"
 
     - name: Permit any
       ios_config:
         lines:
-          - "access-list 150 permit any"
+          - "access-list 150 permit ip any any"
     
     - name: Apply ACL to an interface
       ios_config:
