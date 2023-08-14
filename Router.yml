@@ -1,0 +1,84 @@
+---
+- name: Block IP on Cisco IOS Core
+  hosts: Core
+  gather_facts: no
+
+  vars:
+    ansible_user: "your_username"
+    ansible_password: "your_password"  
+  
+  tasks:
+  
+    - name: Delete ACL
+      ios_config:
+        lines:
+          - "no access-list 150"
+    - name: permit while-list 
+      ios_config:
+        lines:
+          - "access-list 150 permit ip host {{ item }} any"
+      loop: "{{ wl }}"
+          
+    - name: Create ACL to block IPs
+      ios_config:
+        lines:
+          - "access-list 150 deny ip any host {{ item }}"
+      loop: "{{ bl }}"
+
+    - name: Permit any
+      ios_config:
+        lines:
+          - "access-list 150 permit ip any any"
+    
+    - name: Apply ACL to an interface
+      ios_config:
+        lines:
+          - "interface range e1/0-3,e2/0-3,e3/0-3"
+          - "ip access-group 150 in"
+          
+    - name: Save the running configuration
+      ios_command:
+        commands:
+          - "write memory"
+
+- name: Block IP on Cisco IOS Router
+  hosts: Router
+  gather_facts: no
+
+  vars:
+    ansible_user: "your_username"
+    ansible_password: "your_password"
+    
+  tasks:
+    - name: Delete ACL
+      ios_config:
+        lines:
+          - "no access-list 150"
+          
+    - name: permit while-list 
+      ios_config:
+        lines:
+          - "access-list 150 permit ip host {{ item }} any"
+      loop: "{{ wl }}"
+          
+    - name: Create ACL to block IPs
+      ios_config:
+        lines:
+          - "access-list 150 deny ip any host {{ item }}"
+      loop: "{{ bl }}"
+
+    - name: Permit any
+      ios_config:
+        lines:
+          - "access-list 150 permit ip any any"
+    
+    - name: Apply ACL to an interface
+      ios_config:
+        lines:
+          - "interface range e1/0-3"
+          - "ip access-group 150 in"
+          
+    - name: Save the running configuration
+      ios_command:
+        commands:
+          - "write memory"
