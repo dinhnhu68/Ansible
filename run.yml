@@ -7,7 +7,7 @@
     - name: Run ipconfig command
       win_shell: |
         cd "C:\Users\Administrator\Downloads\loki"
-        .\loki.exe -p "C:\Users\Administrator\Downloads" --pesieveshellc --logfolder "\loki_logs\"     
+        .\loki.exe -p "C:\Users\Administrator\Downloads" --pesieveshellc -l "loki_scan.log"     
       register: run_output
 
     - name: Display ipconfig output
